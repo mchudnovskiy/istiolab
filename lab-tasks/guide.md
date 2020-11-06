@@ -5,10 +5,6 @@
 
 ## Pre-Check
 
-### Lab creds
-All credentionals for the lab (you user, namespace and access) are available [here](lab-infra/../../lab-infra/scripts/users/).
-
-
 ### Kubernetes dashboard
 
 Dashboard is a web-based Kubernetes user interface. You can use Dashboard to get an overview of applications running on your cluster, as well as for creating or modifying individual Kubernetes resources (such as Deployments, Jobs, DaemonSets, etc). Dashboard also provides information on the state of Kubernetes resources in your cluster and on any errors that may have occurred.
@@ -16,7 +12,7 @@ Dashboard is a web-based Kubernetes user interface. You can use Dashboard to get
 **We'll use Dashboard to deploy containerized applications to a Kubernetes cluster and manage the cluster resources.**
 
 #### Access the dashboard:
-1. Open [link](https://158.177.253.100:31383/#/login)
+1. Open dashboard
 2. Confirm access to an untrusted web-site (if needed)
 3. Check k8s-dash authorization window and login via provided token
 ![K8s dash login window](lab-infra/../../lab-infra/guide-src/img/dash-login.png) 
@@ -32,7 +28,7 @@ Kiali is a management console for Istio-based service mesh. It provides dashboar
 **We'll use Kiali to see the structure of your service mesh by inferring traffic topology.** 
 
 #### Access Istio Kiali:
-1. Open [link](http://158.177.253.108:30962/kiali/console)
+1. Open Kiali
 2. Confirm access to an untrusted web-site (if needed)  
 3. Check Kiali authorization window and login via provided token
 ![Kiali login window](lab-infra/../../lab-infra/guide-src/img/kiali-login.png)   
@@ -46,7 +42,7 @@ Jaeger is a distributed tracing system released as open source by Uber Technolog
 **We'll use Jaeger to check distributed tracing in Istio.**
 
 #### Access Istio Jaeger:
-1. Open [link](http://158.177.253.108:32320/jaeger/search)
+1. Open Jaeger
 2. Confirm access to an untrusted web-site (if needed)
 3. Check Jaeger  window
 ![Jaeger window](lab-infra/../../lab-infra/guide-src/img/0-jaeger-overview.jpeg)
