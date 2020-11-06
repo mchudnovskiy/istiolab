@@ -1,0 +1,63 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  labels:
+    istio-injection: enabled
+    name: lab-ns-{{NS_TOKEN}}
+  name: lab-ns-{{NS_TOKEN}}
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: lab-ns-{{NS_TOKEN}}-user
+  namespace: lab-ns-{{NS_TOKEN}}
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: lab-ns-{{NS_TOKEN}}-user-full-access
+  namespace: lab-ns-{{NS_TOKEN}}
+rules:
+  - verbs:
+      - '*'
+    apiGroups:
+      - '*'
+      - extensions
+      - apps
+    resources:
+      - '*'
+  - verbs:
+      - '*'
+    apiGroups:
+      - batch
+    resources:
+      - jobs
+      - cronjobs
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: lab-ns-{{NS_TOKEN}}-user-full-access-rb
+  namespace: lab-ns-{{NS_TOKEN}}
+subjects:
+  - kind: ServiceAccount
+    name: lab-ns-{{NS_TOKEN}}-user
+    namespace: lab-ns-{{NS_TOKEN}}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: lab-ns-{{NS_TOKEN}}-user-full-access
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: lab-ns-{{NS_TOKEN}}-user-dash-view
+  namespace: lab-ns-{{NS_TOKEN}}
+subjects:
+  - kind: ServiceAccount
+    name: lab-ns-{{NS_TOKEN}}-user
+    namespace: lab-ns-{{NS_TOKEN}}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: dashboard-viewonly

@@ -1,0 +1,29 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kiali-nodeport
+  namespace: istio-system
+spec:
+  ports:
+    - name: http-kiali
+      protocol: TCP
+      port: 20001
+      targetPort: 20001
+  selector:
+    app: kiali
+  type: NodePort
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: tracing-nodeport
+  namespace: istio-system
+spec:
+  ports:
+    - name: http-query
+      protocol: TCP
+      port: 80
+      targetPort: 16686
+  selector:
+    app: jaeger
+  type: NodePort

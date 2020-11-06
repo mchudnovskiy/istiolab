@@ -1,0 +1,66 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: http-server-config
+data:
+  application.properties: |-
+    server.port=8686
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-server-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: http-server
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: http-server
+        name: http-server
+        version: v1
+    spec:
+      containers:
+        - name: http-server
+          image: "registry.hub.docker.com/mchudnovskiy/http-server:latest"
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 20m
+              memory: 100Mi
+            requests:
+              cpu: 10m
+              memory: 50Mi
+          ports:
+            - containerPort: 8686
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: http-server-config
+          volumeMounts:
+            - name: application-config
+              mountPath: "/deployments/config"
+              readOnly: true
+      volumes:
+        - name: application-config
+          configMap:
+            name: http-server-config
+            items:
+              - key: application.properties
+                path: application.properties
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-server
+spec:
+  selector:
+    name: http-server
+  ports:
+    - name: http
+      port: 8686
+      targetPort: 8686
+  type: ClusterIP

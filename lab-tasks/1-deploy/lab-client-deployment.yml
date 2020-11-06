@@ -1,0 +1,55 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: http-client-config
+data:
+  application.properties: |-
+    server.port=8686
+    service.host=http-server
+    service.port=8686
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: http-client
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: http-client
+        name: http-client
+        version: v1
+    spec:
+      containers:
+        - name: http-client
+          image: "registry.hub.docker.com/mchudnovskiy/http-client:latest"
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 20m
+              memory: 100Mi
+            requests:
+              cpu: 10m
+              memory: 50Mi
+          ports:
+            - containerPort: 8686
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: http-client-config
+          volumeMounts:
+            - name: application-config
+              mountPath: "/deployments/config"
+              readOnly: true
+      volumes:
+        - name: application-config
+          configMap:
+            name: http-client-config
+            items:
+              - key: application.properties
+                path: application.properties
